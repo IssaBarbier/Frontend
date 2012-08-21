@@ -46,7 +46,6 @@ public class MainView extends JFrame implements KeyListener {
 	private JLabel coordinate;
 	private int zoom = 2;
 	private double coord;
-	private double degree;
 	private double xOrigin = 0;
 	private double yOrigin = 0;
 	private double w = 0.01;
@@ -75,19 +74,21 @@ public class MainView extends JFrame implements KeyListener {
 			public void actionPerformed (ActionEvent event)
 			{
 				//w = calculateScale();
-				degree=pic.getCompass();
-				//coord++;
-				compassPanel.setGreenNeedle(degree);
-				compassPanel.setRedNeedle(-degree);
-				inclinometerPanel.setRedNeedle(degree);
-				inclinometerPanel.setGreenNeedle(-degree);
-				compassPanel.update();
-				inclinometerPanel.update();
-				coordinate.setText(pic.getLongitude() + "°N  " + pic.getLatitude() + "°E");
+				if(pic != null)
+				{
+					compassPanel.setGreenNeedle(pic.getCompass());
+					compassPanel.setRedNeedle(0);
+					inclinometerPanel.setRedNeedle(pic.getAngle());
+					inclinometerPanel.setGreenNeedle(0);
+					compassPanel.update();
+					inclinometerPanel.update();
+					coordinate.setText(Math.abs(pic.getLatitude()) + ((pic.getLatitude() >= 0)?"°N  ":"°S ")
+							+ Math.abs(pic.getLongitude()) + (((pic.getLongitude() >= 0)?"°E":"°W")));
+				}
 				
 				compassPanel.setLocation((int)(width()-compassPanel.getWidth())-20, 50);
 				inclinometerPanel.setLocation((int)(width()-compassPanel.getWidth()+(w*70)), (100+inclinometerPanel.getHeight()));
-				coordinate.setBounds((int)width()-100, (int)height()-70, 100, 20);
+				coordinate.setBounds((int)width()-coordinate.getSize().width-(int)(50*w), (int)height()-70, 100, 20);
 
 		    }
 		};
@@ -101,8 +102,11 @@ public class MainView extends JFrame implements KeyListener {
 		name.setBounds(100, 100, 100, 200);
 		name.setForeground(new Color(250,250,250));
 		getLayeredPane().add(name);
+
+		settings = new Settings();
+	//	Serializer.serialize("settings.conf",settings);
 		
-		coordinate = new JLabel(coord + " °N");
+		coordinate = new JLabel(coord + " °N" + coord + "°S");
 		coordinate.setBounds(this.getWidth()-200, this.getHeight()-20, 200, 20);
 		coordinate.setForeground(Color.WHITE);
 		getLayeredPane().add(coordinate);
@@ -145,7 +149,7 @@ public class MainView extends JFrame implements KeyListener {
 		getLayeredPane().add(inclinometerPanel);
 		getLayeredPane().add(skymap);
 
-        this.setMinimumSize(new java.awt.Dimension(680, 420));
+        this.setMinimumSize(new java.awt.Dimension(750, 550));
 		
 		this.setVisible(true);
 		this.setExtendedState(this.MAXIMIZED_BOTH);
@@ -156,17 +160,16 @@ public class MainView extends JFrame implements KeyListener {
 		Timer timer = createTimer();
 		timer.start();
 		
-		settings = new Settings();
-		Serializer.serialize("settings.conf",settings);
+
 		
 		addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
             }
         });
-		
-		repaint();
+
 		pic = new Pic(this);
+		repaint();
 	}
 	
 
@@ -362,7 +365,6 @@ public class MainView extends JFrame implements KeyListener {
 
     		if(evt.getX()<buttonsPanel.getWidth()/2)
     		{
-    			//System.out.print("Settings ! \n");
     			if (settingsPanel.isVisible())
     				settingsPanel.setVisible(false);
     			else
@@ -373,7 +375,6 @@ public class MainView extends JFrame implements KeyListener {
     			}
     		} else
     		{
-    			//System.out.print("Help ! \n");
     			if (helpPanel.isVisible())
     				helpPanel.setVisible(false);
     			else
@@ -434,28 +435,37 @@ public class MainView extends JFrame implements KeyListener {
     	{
     		scale = _scale;
     		
-    		
     		String port[] = jssc.SerialPortList.getPortNames();
-    		comboBoxList[0] = new JComboBox(port);
+    		comboBoxList[0] = new JComboBox<String>(port);
+    		comboBoxList[0].setSelectedItem(settings.getPort());
     		String speed[] = {"110", "300", "600", "1200", "4800", "9600", "14400",
     						"19200", "38400", "57600", "115200", "128000", "256000"};
-    		comboBoxList[1] = new JComboBox(speed);
+    		comboBoxList[1] = new JComboBox<String>(speed);
+    		comboBoxList[1].setSelectedItem(String.valueOf(settings.getSpeed()));
     		String databit[] = {"5", "6", "7", "8"};
-    		comboBoxList[2] = new JComboBox(databit);
+    		comboBoxList[2] = new JComboBox<String>(databit);
+    		comboBoxList[2].setSelectedItem(String.valueOf(settings.getDatabit()));
     		String stopbit[] = {"1", "2", "1_5"};
-    		comboBoxList[3] = new JComboBox(stopbit);
+    		comboBoxList[3] = new JComboBox<String>(stopbit);
+    		comboBoxList[3].setSelectedItem(String.valueOf(settings.getStopbit()));
     		String parity[] = {"NONE", "ODD", "EVEN", "MARK", "SPACE"};
-    		comboBoxList[4] = new JComboBox(parity);
+    		comboBoxList[4] = new JComboBox<String>(parity);
+    		comboBoxList[4].setSelectedItem(settings.getParity());
     		String flowControl[] = {"NONE", "RTSCTS_IN", "RTSCTS_OUT", "XONXOFF_IN","XONXOFF_OUT"};
-    		comboBoxList[5] = new JComboBox(flowControl);
+    		comboBoxList[5] = new JComboBox<String>(flowControl);
+    		comboBoxList[5].setSelectedItem(settings.getFlowControl());
     	//	String samplingRate[] = {"?"};
-    	//	comboBoxList[6] = new JComboBox(samplingRate);
-    		String databaseName[] = {"hyz"};
-    		comboBoxList[6] = new JComboBox(databaseName);
+    	//	comboBoxList[6] = new JComboBox<String>(samplingRate);
+    	//	comboBoxList[6].setSelectedItem(String.valueOf(settings.getSamplingRate()));
+    		String databaseName[] = {"hyz.db"};
+    		comboBoxList[6] = new JComboBox<String>(databaseName);
+    		comboBoxList[6].setSelectedItem(settings.getDatabaseName());
     		String imputDelimiter[] = {";", ":"};
-    		comboBoxList[7] = new JComboBox(imputDelimiter);
+    		comboBoxList[7] = new JComboBox<String>(imputDelimiter);
+    		comboBoxList[7].setSelectedItem(settings.getInputDelimiter());
     		String simulation[] = {"ON", "OFF"};
-    		comboBoxList[8] = new JComboBox(simulation);
+    		comboBoxList[8] = new JComboBox<String>(simulation);
+    		comboBoxList[8].setSelectedItem(settings.getSimulation());
     		
     		for(int i = 0; i < number; i++)  		
     		{
@@ -545,7 +555,6 @@ public class MainView extends JFrame implements KeyListener {
     		settings.setInputDelimiter(comboBoxList[7].getSelectedItem().toString());
     		settings.setSimulation((comboBoxList[8].getSelectedItem().toString().equals("ON"))?true:false);
     		Serializer.serialize("settings.conf",settings);
-    		System.out.println("SETTINGS");
     		
     	}
 		public void setScale(double _scale)
