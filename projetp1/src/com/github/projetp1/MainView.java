@@ -73,21 +73,34 @@ public class MainView extends JFrame implements KeyListener {
 		    // Méthode appelée à chaque tic du timer
 			public void actionPerformed (ActionEvent event)
 			{
+				//w = calculateScale();
+				double degree = 0.0;
+				if(pic != null)
+					degree = pic.getAzimuth();
+				
+				compassPanel.setGreenNeedle(degree);
+				// TODO Set the values for the red needles
+				compassPanel.setRedNeedle(0);
+				inclinometerPanel.setRedNeedle(0);
+				if(pic != null)
+					inclinometerPanel.setGreenNeedle(pic.getPitch());
+				compassPanel.update();
+				inclinometerPanel.update();
 				if(pic != null)
 				{
-					compassPanel.setGreenNeedle(pic.getCompass());
-					compassPanel.setRedNeedle(0);
-					inclinometerPanel.setRedNeedle(pic.getAngle());
-					inclinometerPanel.setGreenNeedle(0);
-					compassPanel.update();
-					inclinometerPanel.update();
-					coordinate.setText(Math.abs(pic.getLatitude()) + ((pic.getLatitude() >= 0)?"°N  ":"°S ")
-							+ Math.abs(pic.getLongitude()) + (((pic.getLongitude() >= 0)?"°E":"°W")));
+					char hemNS = 'N', hemWE = 'E';
+					double lat = pic.getLatitude(), lon = pic.getLongitude();
+				
+					if(lat < 0.0)
+						hemNS = 'S';
+					if(lon < 0.0)
+						hemWE = 'W';
+					coordinate.setText(Math.abs(lat) + "° " + hemNS + ", " + Math.abs(lon) + "° " + hemWE);
 				}
 				
 				compassPanel.setLocation((int)(width()-compassPanel.getWidth())-20, 50);
 				inclinometerPanel.setLocation((int)(width()-compassPanel.getWidth()+(w*70)), (100+inclinometerPanel.getHeight()));
-				coordinate.setBounds((int)width()-coordinate.getSize().width-(int)(50*w), (int)height()-70, 100, 20);
+				coordinate.setBounds((int)width()-100, (int)height()-70, 100, 20);
 
 		    }
 		};
@@ -152,7 +165,7 @@ public class MainView extends JFrame implements KeyListener {
 		getLayeredPane().add(inclinometerPanel);
 		getLayeredPane().add(skymap);
 
-        this.setMinimumSize(new java.awt.Dimension(750, 550));
+        this.setMinimumSize(new java.awt.Dimension(680, 420));
 		
 		this.setVisible(true);
 		this.setExtendedState(this.MAXIMIZED_BOTH);
