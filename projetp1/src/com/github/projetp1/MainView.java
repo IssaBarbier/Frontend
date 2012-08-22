@@ -12,8 +12,6 @@ import java.util.Calendar;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.sun.servicetag.SystemEnvironment;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +42,7 @@ public class MainView extends JFrame implements KeyListener {
 	private Help helpPanel;
 	private SettingsConfig settingsPanel;
 	private JLabel coordinate;
+	private JLabel leftPanel; 
 	private int zoom = 2;
 	private double coord;
 	private double xOrigin = 0;
@@ -51,18 +50,24 @@ public class MainView extends JFrame implements KeyListener {
 	private double w = 0.01;
 	private double w_old = w;
 	
+	/**
+	 * return the width of the main window.
+	 */
 	private double width()
 	{
 		return this.getWidth();
 	}
 	
+	/**
+	 * return the height of the main window.
+	 */
 	private double height()
 	{
 		return this.getHeight();
 	}
 	
 	/**
-	 * 
+	 * This is the timer for update the values form the pic.
 	 */
 	private Timer createTimer () {
 		// Création d'une instance de listener 
@@ -106,14 +111,17 @@ public class MainView extends JFrame implements KeyListener {
 		};
 		return new Timer (50, action);
   }
-		      
+	/**
+	 * Constructor    
+	 */
 	public MainView() {
 		
 		this.addKeyListener(this);
-		name = new JLabel("<html>Nom de l'astre<br />Jupiter<br /><br />Coordonnées<br />13,123<br /><br />Masse<br />1,8986*10^27<br /><br />Magnitude<br />-2,8<br /><br />Distance(Terre)<br />628 000 000 km<br /><br />Diamètre<br />142983 km<br /><br />Température<br />-161°C<br /><br />Couleur<br />Beige</html>");
-		name.setBounds(100, 100, 100, 200);
-		name.setForeground(new Color(250,250,250));
-		getLayeredPane().add(name);
+		//TODO : mettre des valeurs non arbitraire.
+		leftPanel = new JLabel("<html>Nom de l'astre<br />Jupiter<br /><br />Coordonnées<br />13,123<br /><br />Masse<br />1,8986*10^27<br /><br />Magnitude<br />-2,8<br /><br />Distance(Terre)<br />628 000 000 km<br /><br />Diamètre<br />142983 km<br /><br />Température<br />-161°C<br /><br />Couleur<br />Beige</html>");
+		leftPanel.setBounds(100, 100, 100, 200);
+		leftPanel.setForeground(new Color(250,250,250));
+		getLayeredPane().add(leftPanel);
 
 		settings = new Settings();
 		
@@ -122,25 +130,25 @@ public class MainView extends JFrame implements KeyListener {
 		coordinate.setForeground(Color.WHITE);
 		getLayeredPane().add(coordinate);
 		
-        buttonsPanel = new Buttons(1);
+        buttonsPanel = new Buttons(0.1);
 		buttonsPanel.setLocation((int)(width()/2-buttonsPanel.getWidth()/2), 5);
 		
-		helpPanel = new Help(1);
+		helpPanel = new Help(0.1);
 		helpPanel.setLocation((int)(width()/2-buttonsPanel.getWidth()/2-10*w), buttonsPanel.getHeight());
 		
-		settingsPanel = new SettingsConfig(1);
+		settingsPanel = new SettingsConfig(0.1);
 		settingsPanel.setLocation((int)(width()/2-2*buttonsPanel.getWidth()), buttonsPanel.getHeight());
 		
-		searchBarPanel = new SearchBar(1);
+		searchBarPanel = new SearchBar(0.1);
 		searchBarPanel.setLocation(0, 5);
 		
-		zoomBarPanel = new ZoomBar(1);
+		zoomBarPanel = new ZoomBar(0.1);
 		zoomBarPanel.setLocation(5, 5);
 		
-		compassPanel = new Compass(1);
+		compassPanel = new Compass(0.1);
 		compassPanel.setLocation((int)(width()-10-compassPanel.getWidth()), 50);		
 		
-		inclinometerPanel = new Inclinometer(1);
+		inclinometerPanel = new Inclinometer(0.1);
 		inclinometerPanel.setLocation((int)(width()-10-inclinometerPanel.getWidth()), (100+inclinometerPanel.getHeight()));
 
 		skymap = new SkyMap("hyg.db",";",this);
@@ -188,16 +196,29 @@ public class MainView extends JFrame implements KeyListener {
 		repaint();
 	}
 	
+	/**
+	 * When the user click on the skymap, the other window hide and the skymap will be selected.
+	 */  
 	private void skymapMouseClicked(java.awt.event.MouseEvent evt) {
 		settingsPanel.setVisible(false);
 		helpPanel.setVisible(false);
 		searchBarPanel.jScrollPane.setVisible(false);
 		skymap.transferFocusBackward();
 	}
+	
+	/**
+	 * 
+	 */  
 	public void keyTyped(KeyEvent evt){}
 	
-	public void keyReleased(KeyEvent evt){}  
-
+	/**
+	 * 
+	 */  
+	public void keyReleased(KeyEvent evt){} 
+	
+	/**
+	 * navigation on the skymap.
+	 */  
 	public void keyPressed(KeyEvent evt) {
 		float l_fDelta = (float) (0.05 / zoom);
         if(evt.getKeyCode() == 37) //Left
@@ -238,6 +259,7 @@ public class MainView extends JFrame implements KeyListener {
         skymap.updateSkyMap();
     }
 	
+	/*//a supprimer
 	public void showHelpView() {
 		
 	}
@@ -257,9 +279,13 @@ public class MainView extends JFrame implements KeyListener {
 	public void setZoom(int _zoom) {
 		//update skymap
 	}
+	*/
 	
+	/**
+	 * Update the information of the star in the leftPanel.
+	 */  
 	public void updateInfo(CelestialObject _object) {
-		name.setText("<html>Nom de l'astre<br />" +
+		leftPanel.setText("<html>Nom de l'astre<br />" +
 				_object.getProperName() +
 				"<br /><br />Magnitude<br />" +
 				_object.getMag() +
@@ -271,12 +297,17 @@ public class MainView extends JFrame implements KeyListener {
 		
 	}
 	
+	/*
 	public ArrayList<CelestialObject> searchForTextInSearchField() {
 		//request ddb
 		//text form search field
 		return null;
 	}
-
+	*/
+	
+	/**
+	 * calcul the beast scalar for resize the component
+	 */  
 	private double calculateScale()
 	{
 		double w =  width() * 0.15 / 345;
@@ -285,7 +316,10 @@ public class MainView extends JFrame implements KeyListener {
 		if(w<.1)w=.1;
 		return w;
 	}
-
+	
+	/**
+	 * resize all the component
+	 */  
 	private void formComponentResized(java.awt.event.ComponentEvent evt) {
 		
 	    w = calculateScale();
@@ -310,7 +344,7 @@ public class MainView extends JFrame implements KeyListener {
 			
 			skymap.setBounds(0, 0, this.getWidth(), this.getHeight());
 			skymap.setZoom(zoom);
-			name.setBounds((int)(10*w), (int)(10*w), 100, this.getHeight());
+			leftPanel.setBounds((int)(10*w), (int)(10*w), 150, this.getHeight());
 			
 			compassPanel.setLocation((int)(width()-compassPanel.getWidth())-20, 50);
 			inclinometerPanel.setLocation((int)(width()-compassPanel.getWidth()+(w*70)), (100+inclinometerPanel.getHeight()));
@@ -318,7 +352,10 @@ public class MainView extends JFrame implements KeyListener {
 
 	    }
 	}
-
+	
+	/**
+	 * resize an image by a scalar
+	 */  
     public static BufferedImage resizeImage(BufferedImage bImage, double _scale) {
         int destWidth = (int)(_scale*bImage.getWidth());
         int destHeight = (int)(_scale*bImage.getHeight());
@@ -333,6 +370,9 @@ public class MainView extends JFrame implements KeyListener {
         return bImageNew;
     } 
     
+    /**
+	 * resize the image by a arbitrary size
+	 */  
     public static BufferedImage resizeImage2(BufferedImage bImage, double w, double h) {
         int destWidth = (int)(w);//*bImage.getWidth());
         int destHeight = (int)(h);//*bImage.getHeight());
@@ -346,7 +386,10 @@ public class MainView extends JFrame implements KeyListener {
 
         return bImageNew;
     }
-
+    
+    /**
+	 * The Buttons class
+	 */  
     private class Buttons extends JLayeredPane
     {
     	double scale;
@@ -405,12 +448,20 @@ public class MainView extends JFrame implements KeyListener {
     			}
     		}
     	}
-
+    	
+    	/**
+    	 * update the scale variable and call the update method.
+    	 * @param _scale : the scalar
+    	 */
 		public void setScale(double _scale)
 		{
 			scale = _scale;
 			update();
 		}
+
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 			try {
@@ -424,7 +475,10 @@ public class MainView extends JFrame implements KeyListener {
 			repaint();
 		}
     }
-   
+    
+    /**
+	 * The SettingsConfig class
+	 */ 
     private class SettingsConfig extends JLayeredPane
     {
     	double scale;
@@ -451,6 +505,10 @@ public class MainView extends JFrame implements KeyListener {
     			
     	BufferedImage InternalBot;
     	
+    	/**
+    	 * Constructor
+    	 * @param _scale
+    	 */
     	public SettingsConfig(double _scale)
     	{
     		scale = _scale;
@@ -485,7 +543,7 @@ public class MainView extends JFrame implements KeyListener {
     		comboBoxList[7].setSelectedItem(settings.getInputDelimiter());
     		String simulation[] = {"ON", "OFF"};
     		comboBoxList[8] = new JComboBox<String>(simulation);
-    		comboBoxList[8].setSelectedItem(settings.getSimulation());
+    		comboBoxList[8].setSelectedItem((settings.getSimulation())?"ON":"OFF");
     		
     		for(int i = 0; i < number; i++)  		
     		{
@@ -552,11 +610,16 @@ public class MainView extends JFrame implements KeyListener {
             }
             	g2.drawImage(InternalBot, (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2), backgroundTop.getHeight()+InternalTop.getHeight()+number*InternalMid[0].getHeight()+titre.getHeight(), null);
 		}
-
+    	
+    	/**
+    	 * this method was here only for avoid the user to click on the skymap behind the widows.
+    	 * @param evt
+    	 */
     	private void MouseClicked(java.awt.event.MouseEvent evt) {
-    		//pour ne pas cliquer sur la skymap.
+    		//nothing
     	}
-    		private void	jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
+    		
+    	private void	jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
 
     		settings.setPort((comboBoxList[0].getSelectedItem() != null)?comboBoxList[0].getSelectedItem().toString():"NONE");
     		settings.setSpeed(Integer.parseInt(comboBoxList[1].getSelectedItem().toString()));
@@ -571,11 +634,20 @@ public class MainView extends JFrame implements KeyListener {
     		Serializer.serialize("settings.conf",settings);
     		
     	}
+    		
+    	/**
+    	 * update the scale variable and call the update method.
+    	 * @param _scale : the scalar
+    	 */
 		public void setScale(double _scale)
 		{
 			scale = _scale;
 			update();
 		}
+
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 
@@ -608,7 +680,10 @@ public class MainView extends JFrame implements KeyListener {
 			repaint();
 		}
     }
-    
+   
+    /**
+	 * The Help class
+	 */ 
     private class Help extends JLayeredPane
     {
     	double scale;
@@ -621,7 +696,10 @@ public class MainView extends JFrame implements KeyListener {
     	
     	JLabel titre;
     	JLabel text;
-    	
+    	/**
+    	 * Constructor
+    	 * @param _scale
+    	 */
     	public Help(double _scale)
     	{
     		scale = _scale;
@@ -677,15 +755,27 @@ public class MainView extends JFrame implements KeyListener {
             g2.drawImage(internalBot, posX, posY, null);
         }
 
+    	/**
+    	 * this method was here only for avoid the user to click on the skymap behind the widows.
+    	 * @param evt
+    	 */
     	private void MouseClicked(java.awt.event.MouseEvent evt) {
-    		//pour ne pas cliquer sur la skymap.
+    		//nothing
     	}
     	
+    	/**
+    	 * update the scale variable and call the update method.
+    	 * @param _scale : the scalar
+    	 */
 		public void setScale(double _scale)
 		{
 			scale = _scale;
 			update();
 		}
+
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 			
@@ -712,12 +802,20 @@ public class MainView extends JFrame implements KeyListener {
 			repaint();
 		}
     }
-    
+   
+    /**
+	 * The ZoomBar class
+	 */ 
     private class ZoomBar extends JLayeredPane
     {
     	double scale;
     	int hig;
     	JSlider zoomSlider;
+    	
+    	/**
+    	 * Constructor
+    	 * @param _scale
+    	 */
     	public ZoomBar(double _scale)
     	{
     		scale = _scale;
@@ -738,11 +836,22 @@ public class MainView extends JFrame implements KeyListener {
 	            }
 	        });
     	}
+    	
+    	/**
+    	 * Called then the value of the slider change
+    	 * This method update the skymap
+    	 * @param evt
+    	 */
     	private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {
     		zoom = zoomSlider.getValue();
     		skymap.setZoom(zoom);
     		skymap.updateSkyMap();
     	}
+    	
+    	/**
+    	 * update the scale variable and call the update method.
+    	 * @param _scale : the scalar
+    	 */
 		public void setScale(double _scale)
 		{
 			scale = _scale;
@@ -750,6 +859,10 @@ public class MainView extends JFrame implements KeyListener {
 			hig = 30;
 			update();
 		}
+
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 			
@@ -758,13 +871,16 @@ public class MainView extends JFrame implements KeyListener {
 			repaint();
 		}
     }
-
+    
+    /**
+	 * The SearchBar class
+	 */ 
     private class SearchBar extends JLayeredPane 
     {
     	double scale;
     	int hig;
     	JTextField jtextField;
-    	JList jList1;
+    	JList<String> jList1;
     	ListModel list;
     	ListModel list2;
     	String[] Keys = {"!id ", "!ProperName ", "!RA ", "!Dec ", "!Distance ", "!Mag ", "!ColorIndex "};
@@ -909,6 +1025,9 @@ public class MainView extends JFrame implements KeyListener {
 		
     }
 
+    /**
+	 * The Compass class
+	 */ 
 	private class Compass extends JLayeredPane
 	{
 		double scale = 1;
@@ -919,6 +1038,10 @@ public class MainView extends JFrame implements KeyListener {
 		Needle redNeedle;
 		Needle greenNeedle;
 		
+		/**
+		 * Constructor
+		 * @param _scale : the scalar for resize the components.
+		 */
 		public Compass(double _scale)
 		{
 			scale = _scale;
@@ -965,13 +1088,20 @@ public class MainView extends JFrame implements KeyListener {
             Graphics2D g2 = (Graphics2D) g; 
             g2.drawImage(background, 0, 0, null); 
         }
-		
+        
+        /**
+		 * update the scale variable and call the update method.
+		 * @param _scale : the scalar
+		 */
 		public void setScale (double _scale)
 		{
 			scale = _scale;
 			update();
 		}
 		
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 			try {
@@ -998,19 +1128,27 @@ public class MainView extends JFrame implements KeyListener {
 			coordinate.setBounds(0, (int)(scale*310), (int)(scale*345), (int)(scale*35));
 			repaint();
 		}
-		
+
+		/** 
+		 *  Used for update the red needle angle.
+		 *  @param _redAngle : It's the new angle for the red needle
+		 */
 		public void setRedNeedle (double _angle) 
 		{
             _angle = Math.toRadians(_angle);
             redAngle = _angle;
 		}
 		
+		/** 
+		 *  Used for update the green needle angle.
+		 *  @param _redAngle : It's the new angle for the green needle
+		 */
 		public void setGreenNeedle (double _angle) 
 		{
             _angle = Math.toRadians(_angle);
             greenAngle =_angle;
 		}
-		
+		/*
 		private class Needle extends JPanel
 		{
 		    BufferedImage needleImage;
@@ -1065,9 +1203,12 @@ public class MainView extends JFrame implements KeyListener {
                 g2.drawImage(needleImage, 0, 0, null); 
             }
 		}
-	
+	*/
 	}
 
+	/**
+	 * The Inclinometer class
+	 */ 
 	private class Inclinometer extends JLayeredPane
 	{
 		double scale = 1;
@@ -1078,6 +1219,11 @@ public class MainView extends JFrame implements KeyListener {
 		Needle redNeedle;
 		Needle greenNeedle;
 		
+		/** 
+		 * Inclinometer
+		 * Constructor
+		 * @param _scale : It's the scale for resize the components
+		 */
 		public Inclinometer(double _scale)
 		{
 			scale = _scale;
@@ -1125,12 +1271,19 @@ public class MainView extends JFrame implements KeyListener {
             g2.drawImage(background, 0, 0, null); 
         }
 		
+        /**
+		 * update the scale variable and call the update method.
+		 * @param _scale : the scalar
+		 */
 		public void setScale (double _scale)
 		{ 
 			scale = _scale;
 			update();
 		}
 		
+		/** 
+		 * Resize the components
+		 */
 		public void update()
 		{
 			try {
@@ -1158,78 +1311,102 @@ public class MainView extends JFrame implements KeyListener {
 			coordinate.setBounds(0, (int)(scale*258), (int)(scale*186), (int)(scale*35));
 		}
         
+		/** 
+		 *  Used for update the red needle angle.
+		 *  @param _redAngle : It's the new angle for the red needle
+		 */
 		public void setRedNeedle (double _redAngle) 
 		{
 			redAngle = _redAngle;		
 		}
 		
+		/** 
+		 *  Used for update the green needle angle.
+		 *  @param _redAngle : It's the new angle for the green needle
+		 */
 		public void setGreenNeedle (double _greenAngle) 
 		{
 			greenAngle = _greenAngle;
 		}
 
-		private class Needle extends JPanel
+	
+}
+	
+/** 
+ *  private class Needle
+ */
+private class Needle extends JPanel
+{
+	BufferedImage needleImage;
+	double angle = 0;
+	double scale = 1;
+	String adresseImage;
+	    
+	/** 
+	 *  private class Needle
+	 *  @param _adressImage : the path of the image
+	 *  @param _scale : the scale for resize the image
+	 */
+	public Needle(String _adresseImage, double _scale)
+	{
+		scale = _scale;
+		adresseImage = _adresseImage;
+		try
 		{
-		    BufferedImage needleImage;
-		    double angle = 0;
-		    double scale = 1;
-		    String adresseImage;
-		    
-			public Needle(String _adresseImage, double _scale)
-			{
-				scale = _scale;
-				adresseImage = _adresseImage;
-				try
-				{
-					needleImage = resizeImage(ImageIO.read(new File(adresseImage)),scale);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+			needleImage = resizeImage(ImageIO.read(new File(adresseImage)),scale);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+		
+	/**
+	 * used of resize the components
+	 * @param _scale : the scalar with the components are resized
+	 */
+	public void scale(double _scale)
+	{
+		if(scale != _scale)
+		{
+			scale = _scale;
+			try {
+				needleImage = resizeImage(ImageIO.read(new File(adresseImage)),scale);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			
-			public void scale(double _scale)
-			{
-				if(scale != _scale)
-				{
-					scale = _scale;
-					try {
-						needleImage = resizeImage(ImageIO.read(new File(adresseImage)),scale);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			
-			public void rotate(double _angle)
-			{
-				angle = Math.toRadians(_angle);				
-				
-				if(Math.sin(angle) < 0 && Math.cos(angle) < 0)
-					angle = angle + 2 * (3*Math.PI/2 - angle);
-				if(Math.sin(angle) > 0 && Math.cos(angle) < 0)
-					angle = angle - 2 * (angle - Math.PI/2);
-				
-				repaint();
-			}
-			
-			@Override 
-	        public Dimension getPreferredSize()
-			{ 
-	            return new Dimension(needleImage.getWidth(), needleImage.getHeight()); 
-	        } 
-	        @Override 
-	        protected void paintComponent(Graphics g)
-	        { 
-	            super.paintComponent(g); 
-	            Graphics2D g2 = (Graphics2D) g;
-	            g2.rotate(-angle, scale*5, needleImage.getHeight() / 2); //TODO voir valeur non constante
-	            g2.drawImage(needleImage, 0, 0, null); 
-	        }
 		}
 	}
 	
-	private JLayeredPane leftPanel;
-	private JLabel name; 
+	/**
+	 * used for rotate the needles
+	 * @param _angle : the new angle of the needle.
+	 */
+	public void rotate(double _angle)
+	{
+		angle = Math.toRadians(_angle);				
+		
+		if(Math.sin(angle) < 0 && Math.cos(angle) < 0)
+			angle = angle + 2 * (3*Math.PI/2 - angle);
+		if(Math.sin(angle) > 0 && Math.cos(angle) < 0)
+			angle = angle - 2 * (angle - Math.PI/2);
+			
+		repaint();
+	}
+		
+	@Override 
+	public Dimension getPreferredSize()
+	{ 
+		return new Dimension(needleImage.getWidth(), needleImage.getHeight()); 
+	} 
+	@Override 
+	protected void paintComponent(Graphics g)
+	{ 
+		super.paintComponent(g); 
+		Graphics2D g2 = (Graphics2D) g;
+		g2.rotate(-angle, scale*5, needleImage.getHeight() / 2); //TODO voir valeur non constante
+		g2.drawImage(needleImage, 0, 0, null); 
+	}
+}
+
 }
