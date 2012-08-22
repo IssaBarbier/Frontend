@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author alexandr.perez
+ * @author alexandr.perez and issa.barbier
  *
  */
 @SuppressWarnings("serial")
@@ -73,7 +73,6 @@ public class MainView extends JFrame implements KeyListener {
 		    // Méthode appelée à chaque tic du timer
 			public void actionPerformed (ActionEvent event)
 			{
-				//w = calculateScale();
 				if(pic != null)
 				{
 					compassPanel.setGreenNeedle(pic.getCompass());
@@ -104,7 +103,6 @@ public class MainView extends JFrame implements KeyListener {
 		getLayeredPane().add(name);
 
 		settings = new Settings();
-	//	Serializer.serialize("settings.conf",settings);
 		
 		coordinate = new JLabel(coord + " °N" + coord + "°S");
 		coordinate.setBounds(this.getWidth()-200, this.getHeight()-20, 200, 20);
@@ -139,6 +137,11 @@ public class MainView extends JFrame implements KeyListener {
 		skymap.setSize(this.getWidth()-200,this.getHeight()-20);
 		skymap.setLocation(200, 20);
 		skymap.updateSkyMap();
+		skymap.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                skymapMouseClicked(evt);
+            }
+		});
 		
 		getLayeredPane().add(buttonsPanel);
 		getLayeredPane().add(searchBarPanel);
@@ -162,7 +165,7 @@ public class MainView extends JFrame implements KeyListener {
 		
 
 		
-		addComponentListener(new java.awt.event.ComponentAdapter() {
+		this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
             }
@@ -172,7 +175,11 @@ public class MainView extends JFrame implements KeyListener {
 		repaint();
 	}
 	
-
+	private void skymapMouseClicked(java.awt.event.MouseEvent evt) {
+		settingsPanel.setVisible(false);
+		helpPanel.setVisible(false);
+		skymap.transferFocusBackward();
+	}
 	public void keyTyped(KeyEvent evt){}
 	
 	public void keyReleased(KeyEvent evt){}  
@@ -248,7 +255,6 @@ public class MainView extends JFrame implements KeyListener {
 				_object.getColorIndex() +
 				"</html>");
 		
-	//	System.out.println("MainView.updateInfo()");
 	}
 	
 	public ArrayList<CelestialObject> searchForTextInSearchField() {
@@ -831,7 +837,6 @@ public class MainView extends JFrame implements KeyListener {
 		     		{	
 		     			for (int i = 0; i < listCelestialObject.size(); i++)
 		     			{
-		     				System.out.println(i);
 		     				list.setElement(listCelestialObject.get(i).getId());
 		     				list2.setElement(listCelestialObject.get(i));
 		     			}
@@ -852,8 +857,6 @@ public class MainView extends JFrame implements KeyListener {
 	     	
 	        if (list.getSize() > 0)
 	        {
-	        	//System.out.print(listCelestialObject.get(0).getId());
-	           	//System.out.print(list.getElementAt(0));
 	        	int min = (list.getSize() < 5)?list.getSize()*21:(int)(200*scale);
 	        	jScrollPane.setBounds(0, 20, (int)(500*scale), min);
 	           	jScrollPane.setVisible(true);
@@ -875,7 +878,6 @@ public class MainView extends JFrame implements KeyListener {
 			
 			this.setBounds(0, 0, (int)(width()/2-buttonsPanel.getWidth()/2-70*scale-compassPanel.getWidth()), hig+(int)(400*scale));
     		jtextField.setBounds(0, 0, (int)(width()/2-buttonsPanel.getWidth()/2-70*scale-compassPanel.getWidth()), hig);
-    		//complement.setBounds(0, hig, (int)(width()/2-buttonsPanel.getWidth()/2-70*scale-compassPanel.getWidth()), hig+(int)(100*scale));
     		repaint();
 		}
 		
