@@ -178,6 +178,7 @@ public class MainView extends JFrame implements KeyListener {
 	private void skymapMouseClicked(java.awt.event.MouseEvent evt) {
 		settingsPanel.setVisible(false);
 		helpPanel.setVisible(false);
+		searchBarPanel.jScrollPane.setVisible(false);
 		skymap.transferFocusBackward();
 	}
 	public void keyTyped(KeyEvent evt){}
@@ -499,9 +500,6 @@ public class MainView extends JFrame implements KeyListener {
             		this.add(comboBoxList[i]);
                 	
                 }
-    				
-    			
-    			
     			InternalBot = resizeImage(ImageIO.read(new File("res/settings-bot-internal.png")), scale/2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -509,7 +507,7 @@ public class MainView extends JFrame implements KeyListener {
 			}
     		
 
-    		titre = new JLabel("Setings", JLabel.CENTER);
+    		titre = new JLabel("Settings", JLabel.CENTER);
 			titre.setFont(new Font("Calibri", Font.BOLD, (int)(36*scale)));
 			titre.setBounds(0, backgroundTop.getHeight(), (int)(scale*345), (int)(scale*34));
 			titre.setForeground(Color.WHITE);
@@ -532,21 +530,18 @@ public class MainView extends JFrame implements KeyListener {
             g2.drawImage(backgroundTop, 0, 0, null); 
             g2.drawImage(backgroundMid, 0, backgroundTop.getHeight(), null);
             g2.drawImage(backgroundBot, 0, backgroundTop.getHeight()+backgroundMid.getHeight(), null);
-            g2.drawImage(InternalTop, (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2),  backgroundTop.getHeight()+25, null);
+            g2.drawImage(InternalTop, (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2),  backgroundTop.getHeight()+titre.getHeight(), null);
             for(int i = 0; i < number; i++)
             {
-            	g2.drawImage(InternalMid[i], (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+25, null);
+            	g2.drawImage(InternalMid[i], (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+titre.getHeight(), null);
             	
             	
             }
-            	g2.drawImage(InternalBot, (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2), backgroundTop.getHeight()+InternalTop.getHeight()+number*InternalMid[0].getHeight()+25, null);
+            	g2.drawImage(InternalBot, (int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2), backgroundTop.getHeight()+InternalTop.getHeight()+number*InternalMid[0].getHeight()+titre.getHeight(), null);
 		}
 
     	private void MouseClicked(java.awt.event.MouseEvent evt) {
-    		if (evt.getY() > backgroundTop.getHeight()+25 && evt.getY() < backgroundTop.getHeight()+InternalTop.getHeight()+25)
-    		{
-    			System.out.print("1\n");
-    		}
+    		//pour ne pas cliquer sur la skymap.
     	}
     		private void	jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -570,17 +565,22 @@ public class MainView extends JFrame implements KeyListener {
 		}
 		public void update()
 		{
+
 			try {
 				backgroundTop = resizeImage(ImageIO.read(new File("res/settings-top-background.png")), scale/2);
-				backgroundMid = resizeImage2(ImageIO.read(new File("res/settings-mid-background.png")), backgroundTop.getWidth(), (int)(number*scale*70));
+
+				titre.setFont(new Font("Calibri", Font.BOLD,  (int)(scale*36)));
+				titre.setBounds(0, backgroundTop.getHeight(), backgroundTop.getWidth(), (int)(scale*35));
+				
+				backgroundMid = resizeImage2(ImageIO.read(new File("res/settings-mid-background.png")), backgroundTop.getWidth(), (int)(number*scale*67));
 				backgroundBot = resizeImage(ImageIO.read(new File("res/settings-bot-background.png")), scale/2);
 				InternalTop = resizeImage(ImageIO.read(new File("res/settings-top-internal.png")), scale/2);
 				for(int i = 0; i < number; i++)
 				{
 					InternalMid[i] = resizeImage(ImageIO.read(new File("res/settings-mid-internal.png")), scale/2);
-				  	settingList[i].setBounds((int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2+30*scale), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+27, (int)(500*scale), (int)(30*scale));
+				  	settingList[i].setBounds((int)(backgroundTop.getWidth()/2-InternalTop.getWidth()/2+30*scale), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+titre.getHeight()+(int)(10*scale), (int)(500*scale), (int)(30*scale));
 				  	settingList[i].setFont(new Font("Calibri", Font.BOLD, (int)(36*scale)));
-				  	comboBoxList[i].setBounds((int)(backgroundTop.getWidth()-200*scale), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+27, (int)(150*scale), (int)(40*scale));
+				  	comboBoxList[i].setBounds((int)(backgroundTop.getWidth()-300*scale), backgroundTop.getHeight()+InternalTop.getHeight()+i*InternalMid[0].getHeight()+titre.getHeight()+(int)(4*scale), (int)(250*scale), (int)(40*scale));
 				  	comboBoxList[i].setFont(new Font("Calibri", Font.BOLD, (int)(25*scale)));
 				  	
 				}
@@ -590,8 +590,6 @@ public class MainView extends JFrame implements KeyListener {
 				e.printStackTrace();
 			}
 			
-			titre.setFont(new Font("Calibri", Font.BOLD,  (int)(scale*36)));
-			titre.setBounds(0, backgroundTop.getHeight(), backgroundTop.getWidth(), (int)(scale*35));
 			
 			this.setBounds(0, 0, (int)(backgroundTop.getWidth()), (int)(100*scale*number));
 			repaint();
@@ -640,6 +638,11 @@ public class MainView extends JFrame implements KeyListener {
     			this.setBounds(0, 0, (int)(backgroundTop.getWidth()*2), (int)(500*scale));
     			this.setVisible(false);
     			
+    			this.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        MouseClicked(evt);
+                    }
+        		});
     			this.repaint();
     	}
     	@Override 
@@ -661,6 +664,10 @@ public class MainView extends JFrame implements KeyListener {
             g2.drawImage(internalBot, posX, posY, null);
         }
 
+    	private void MouseClicked(java.awt.event.MouseEvent evt) {
+    		//pour ne pas cliquer sur la skymap.
+    	}
+    	
 		public void setScale(double _scale)
 		{
 			scale = _scale;
@@ -682,7 +689,7 @@ public class MainView extends JFrame implements KeyListener {
     			
     			
     			internalMid = resizeImage2(ImageIO.read(new File("res/mid-interne.png")), text.getWidth(), text.getHeight()-52*scale);
-    			backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")), backgroundTop.getWidth(), text.getHeight()+titre.getHeight()*3);
+    			backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")), backgroundTop.getWidth(), text.getHeight()+titre.getHeight()*2.7);
     			internalBot = resizeImage(ImageIO.read(new File("res/bas-interieur.png")), scale/2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -860,7 +867,7 @@ public class MainView extends JFrame implements KeyListener {
 	        if (list.getSize() > 0)
 	        {
 	        	int min = (list.getSize() < 5)?list.getSize()*21:(int)(200*scale);
-	        	jScrollPane.setBounds(0, 20, (int)(500*scale), min);
+	        	jScrollPane.setBounds(0, 20, jtextField.getWidth(), min);
 	           	jScrollPane.setVisible(true);
 	           	
 	        } 
@@ -877,10 +884,13 @@ public class MainView extends JFrame implements KeyListener {
 		}
 		public void update()
 		{
-			
+
 			this.setBounds(0, 0, (int)(width()/2-buttonsPanel.getWidth()/2-70*scale-compassPanel.getWidth()), hig+(int)(400*scale));
     		jtextField.setBounds(0, 0, (int)(width()/2-buttonsPanel.getWidth()/2-70*scale-compassPanel.getWidth()), hig);
-    		repaint();
+
+        	int min = (list.getSize() < 5)?list.getSize()*21:(int)(200*scale);
+        	jScrollPane.setBounds(0, 20, jtextField.getWidth(), min);
+        	repaint();
 		}
 		
 		
