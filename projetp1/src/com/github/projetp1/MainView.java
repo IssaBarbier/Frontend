@@ -818,14 +818,16 @@ public class MainView extends JFrame implements KeyListener {
     		list.removeAll();
     		list2.removeAll();
     		
-	     	if(jtextField.getText().equals("!"))
+    		String[] s = jtextField.getText().split(";");
+    		
+	     	if(s[s.length-1].equals("!"))
 	     	{
 	     		for (int i = 0; i < Keys.length; i++)
      			{
      				list.setElement(Keys[i]);
      			}
 	     	}
-	     	else if(jtextField.getText().split(" ").length>1)
+	     	else if(s[s.length-1].split(" ").length>1)
 	     	{
 	     		try{
 		     		db = new DataBase("hyg.db", ";");
