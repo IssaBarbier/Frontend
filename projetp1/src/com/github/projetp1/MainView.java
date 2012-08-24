@@ -139,7 +139,7 @@ public class MainView extends JFrame implements KeyListener
 						hemNS = 'S';
 					if (lon < 0.0)
 						hemWE = 'W';
-					coordinate.setText(Math.abs(lat) + "° " + hemNS + ", " + Math.abs(lon) + "° "
+					coordinate.setText(Math.abs(lat) + "° " + hemNS + ", " + Math.abs(lon) + "° " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ hemWE);
 				}
 
@@ -161,7 +161,7 @@ public class MainView extends JFrame implements KeyListener
 	{
 		try
 		{
-			db = new DataBase("hyg.db", ";");
+			db = new DataBase("hyg.db", ";"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (Exception ex)
 		{
@@ -169,14 +169,14 @@ public class MainView extends JFrame implements KeyListener
 		}
 		this.addKeyListener(this);
 		// TODO : mettre des valeurs non arbitraire.
-		leftPanel = new JLabel("");
+		leftPanel = new JLabel(""); //$NON-NLS-1$
 		leftPanel.setBounds(100, 100, 100, 200);
 		leftPanel.setForeground(new Color(250, 250, 250));
 		getLayeredPane().add(leftPanel);
 
 		settings = new Settings();
 
-		coordinate = new JLabel(0 + " °N" + 0 + "°S");
+		coordinate = new JLabel(0 + Messages.getString("MainView.DegreesNorth") + 0 + Messages.getString("MainView.DegreesSouth")); //$NON-NLS-1$ //$NON-NLS-2$
 		coordinate.setBounds(this.getWidth() - 200, this.getHeight() - 20, 200, 20);
 		coordinate.setForeground(Color.WHITE);
 		getLayeredPane().add(coordinate);
@@ -340,10 +340,10 @@ public class MainView extends JFrame implements KeyListener
 	{
 		if (_object != null)
 		{
-			leftPanel.setText("<html>Nom de l'astre<br />" + _object.getProperName()
-					+ "<br /><br />Magnitude<br />" + _object.getMag()
-					+ "<br /><br />Distance(Terre)<br />" + (int) (_object.getDistance() * 3.2616)
-					+ " a.l<br /><br />Couleur<br />" + _object.getColorIndex() + "</html>");
+			leftPanel.setText("<html>" + Messages.getString("MainView.StarName") + "<br />" + _object.getProperName() //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ "<br /><br />" + Messages.getString("MainView.Magnitude") + "<br />" + _object.getMag() //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ "<br /><br />" + Messages.getString("MainView.DistanceToEarth") + "<br />" + (int) (_object.getDistance() * 3.2616) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ Messages.getString("MainView.LY") + "<br /><br />" + Messages.getString("MainView.Colour") + "<br />" + _object.getColorIndex() + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 	}
 
@@ -464,8 +464,8 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				imgSettings = resizeImage(ImageIO.read(new File("res/SettingsIcon.png")), scale);
-				imgHelp = resizeImage(ImageIO.read(new File("res/HelpIcon.png")), scale);
+				imgSettings = resizeImage(ImageIO.read(new File("res/SettingsIcon.png")), scale); //$NON-NLS-1$
+				imgHelp = resizeImage(ImageIO.read(new File("res/HelpIcon.png")), scale); //$NON-NLS-1$
 			}
 			catch (IOException e)
 			{
@@ -530,8 +530,8 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				imgSettings = resizeImage(ImageIO.read(new File("res/SettingsIcon.png")), scale);
-				imgHelp = resizeImage(ImageIO.read(new File("res/HelpIcon.png")), scale);
+				imgSettings = resizeImage(ImageIO.read(new File("res/SettingsIcon.png")), scale); //$NON-NLS-1$
+				imgHelp = resizeImage(ImageIO.read(new File("res/HelpIcon.png")), scale); //$NON-NLS-1$
 			}
 			catch (IOException e)
 			{
@@ -555,10 +555,10 @@ public class MainView extends JFrame implements KeyListener
 		BufferedImage[] InternalMid = new BufferedImage[number];
 
 		JLabel titre;
-		JLabel[] settingList = { new JLabel("port"), new JLabel("speed"), new JLabel("databit"),
-				new JLabel("stopbit"), new JLabel("parity"), new JLabel("flowControl"),
-				new JLabel("samplingRate"), new JLabel("databaseName"),
-				new JLabel("ImputDelimiter"), new JLabel("simulation") };
+		JLabel[] settingList = { new JLabel(Messages.getString("MainView.Port")), new JLabel(Messages.getString("MainView.Speed")), new JLabel(Messages.getString("MainView.Databits")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new JLabel(Messages.getString("MainView.Stopbits")), new JLabel(Messages.getString("MainView.Parity")), new JLabel(Messages.getString("MainView.FlowControl")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new JLabel(Messages.getString("MainView.SamplingRate")), new JLabel(Messages.getString("MainView.DatabaseName")), //$NON-NLS-1$ //$NON-NLS-2$
+				new JLabel(Messages.getString("MainView.InputDelimiter")), new JLabel(Messages.getString("MainView.Simulation")) }; //$NON-NLS-1$ //$NON-NLS-2$
 		JComboBox[] comboBoxList = new JComboBox[number];
 
 		BufferedImage InternalBot;
@@ -575,34 +575,34 @@ public class MainView extends JFrame implements KeyListener
 			String port[] = jssc.SerialPortList.getPortNames();
 			comboBoxList[0] = new JComboBox<String>(port);
 			comboBoxList[0].setSelectedItem(settings.getPort());
-			String speed[] = { "110", "300", "600", "1200", "4800", "9600", "14400", "19200",
-					"38400", "57600", "115200", "128000", "256000" };
+			String speed[] = { "110", "300", "600", "1200", "4800", "9600", "14400", "19200", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+					"38400", "57600", "115200", "128000", "256000" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[1] = new JComboBox<String>(speed);
 			comboBoxList[1].setSelectedItem(String.valueOf(settings.getSpeed()));
-			String databit[] = { "5", "6", "7", "8" };
+			String databit[] = { "5", "6", "7", "8" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			comboBoxList[2] = new JComboBox<String>(databit);
 			comboBoxList[2].setSelectedItem(String.valueOf(settings.getDatabit()));
-			String stopbit[] = { "1", "2", "1_5" };
+			String stopbit[] = { "1", "2", "1_5" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			comboBoxList[3] = new JComboBox<String>(stopbit);
 			comboBoxList[3].setSelectedItem(String.valueOf(settings.getStopbit()));
-			String parity[] = { "NONE", "ODD", "EVEN", "MARK", "SPACE" };
+			String parity[] = { Messages.getString("MainView.None"), Messages.getString("MainView.Odd"), Messages.getString("MainView.Even"), Messages.getString("MainView.Mark"), Messages.getString("MainView.Space") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[4] = new JComboBox<String>(parity);
 			comboBoxList[4].setSelectedItem(settings.getParity());
-			String flowControl[] = { "NONE", "RTSCTS_IN", "RTSCTS_OUT", "XONXOFF_IN", "XONXOFF_OUT" };
+			String flowControl[] = { Messages.getString("MainView.None"), Messages.getString("MainView.RTSCTS_IN"), Messages.getString("MainView.RTSCTS_OUT"), Messages.getString("MainView.XONXOFF_IN"), Messages.getString("MainView.XONXOFF_OUT") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[5] = new JComboBox<String>(flowControl);
 			comboBoxList[5].setSelectedItem(settings.getFlowControl());
-			String samplingRate[] = { "25" };
+			String samplingRate[] = { "25" }; //$NON-NLS-1$
 			comboBoxList[6] = new JComboBox<String>(samplingRate);
 			comboBoxList[6].setSelectedItem(String.valueOf(settings.getSamplingRate()));
-			String databaseName[] = { "hyz.db" };
+			String databaseName[] = { "hyz.db" }; //$NON-NLS-1$
 			comboBoxList[7] = new JComboBox<String>(databaseName);
 			comboBoxList[7].setSelectedItem(settings.getDatabaseName());
-			String imputDelimiter[] = { ";", ":" };
+			String imputDelimiter[] = { ";", ":" }; //$NON-NLS-1$ //$NON-NLS-2$
 			comboBoxList[8] = new JComboBox<String>(imputDelimiter);
 			comboBoxList[8].setSelectedItem(settings.getInputDelimiter());
-			String simulation[] = { "ON", "OFF" };
+			String simulation[] = { Messages.getString("MainView.On"), Messages.getString("MainView.Off") }; //$NON-NLS-1$ //$NON-NLS-2$
 			comboBoxList[9] = new JComboBox<String>(simulation);
-			comboBoxList[9].setSelectedItem((settings.getSimulation()) ? "ON" : "OFF");
+			comboBoxList[9].setSelectedItem((settings.getSimulation()) ? Messages.getString("MainView.On") : Messages.getString("MainView.Off")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			for (int i = 0; i < number; i++)
 			{
@@ -619,23 +619,23 @@ public class MainView extends JFrame implements KeyListener
 			try
 			{
 				backgroundTop = resizeImage(
-						ImageIO.read(new File("res/settings-top-background.png")), scale / 2);
+						ImageIO.read(new File("res/settings-top-background.png")), scale / 2); //$NON-NLS-1$
 				backgroundMid = resizeImage(
-						ImageIO.read(new File("res/settings-mid-background.png")), scale / 2);
+						ImageIO.read(new File("res/settings-mid-background.png")), scale / 2); //$NON-NLS-1$
 				backgroundBot = resizeImage(
-						ImageIO.read(new File("res/settings-bot-background.png")), scale / 2);
-				InternalTop = resizeImage(ImageIO.read(new File("res/settings-top-internal.png")),
+						ImageIO.read(new File("res/settings-bot-background.png")), scale / 2); //$NON-NLS-1$
+				InternalTop = resizeImage(ImageIO.read(new File("res/settings-top-internal.png")), //$NON-NLS-1$
 						scale / 2);
 				for (int i = 0; i < number; i++)
 				{
 					InternalMid[i] = resizeImage(
-							ImageIO.read(new File("res/settings-mid-internal.png")), scale / 2);
+							ImageIO.read(new File("res/settings-mid-internal.png")), scale / 2); //$NON-NLS-1$
 
 					settingList[i].setBounds(
 							(backgroundTop.getWidth() / 2 - InternalTop.getWidth() / 2),
 							backgroundTop.getHeight() + InternalTop.getHeight() + i
 									* InternalMid[0].getHeight() + 25, (int) (500 * scale), 30);
-					settingList[i].setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale)));
+					settingList[i].setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale))); //$NON-NLS-1$
 					settingList[i].setForeground(Color.BLACK);
 					this.add(settingList[i]);
 					comboBoxList[i].setBounds((int) (backgroundTop.getWidth() / 2 - 100 * scale),
@@ -644,7 +644,7 @@ public class MainView extends JFrame implements KeyListener
 					this.add(comboBoxList[i]);
 
 				}
-				InternalBot = resizeImage(ImageIO.read(new File("res/settings-bot-internal.png")),
+				InternalBot = resizeImage(ImageIO.read(new File("res/settings-bot-internal.png")), //$NON-NLS-1$
 						scale / 2);
 			}
 			catch (IOException e)
@@ -652,8 +652,8 @@ public class MainView extends JFrame implements KeyListener
 				e.printStackTrace();
 			}
 
-			titre = new JLabel("Settings", SwingConstants.CENTER);
-			titre.setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale)));
+			titre = new JLabel(Messages.getString("MainView.Settings"), SwingConstants.CENTER); //$NON-NLS-1$
+			titre.setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale))); //$NON-NLS-1$
 			titre.setBounds(0, backgroundTop.getHeight(), (int) (scale * 345), (int) (scale * 34));
 			titre.setForeground(Color.WHITE);
 			this.add(titre);
@@ -711,7 +711,7 @@ public class MainView extends JFrame implements KeyListener
 		{
 
 			settings.setPort((comboBoxList[0].getSelectedItem() != null) ? comboBoxList[0]
-					.getSelectedItem().toString() : "NONE");
+					.getSelectedItem().toString() : Messages.getString("MainView.None")); //$NON-NLS-1$
 			settings.setSpeed(Integer.parseInt(comboBoxList[1].getSelectedItem().toString()));
 			settings.setDatabit(Integer.parseInt(comboBoxList[2].getSelectedItem().toString()));
 			settings.setStopbit(Integer.parseInt(comboBoxList[3].getSelectedItem().toString()));
@@ -720,9 +720,9 @@ public class MainView extends JFrame implements KeyListener
 			settings.setSamplingRate(Integer.parseInt(comboBoxList[6].getSelectedItem().toString()));
 			settings.setDatabaseName(comboBoxList[6].getSelectedItem().toString());
 			settings.setInputDelimiter(comboBoxList[7].getSelectedItem().toString());
-			settings.setSimulation((comboBoxList[8].getSelectedItem().toString().equals("ON")) ? true
+			settings.setSimulation((comboBoxList[8].getSelectedItem().toString().equals(Messages.getString("MainView.On"))) ? true //$NON-NLS-1$
 					: false);
-			Serializer.serialize("settings.conf", settings);
+			Serializer.serialize("settings.conf", settings); //$NON-NLS-1$
 
 		}
 
@@ -739,20 +739,20 @@ public class MainView extends JFrame implements KeyListener
 			try
 			{
 				backgroundTop = resizeImage(
-						ImageIO.read(new File("res/settings-top-background.png")), scale / 2);
+						ImageIO.read(new File("res/settings-top-background.png")), scale / 2); //$NON-NLS-1$
 
-				titre.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+				titre.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 				titre.setBounds(0, backgroundTop.getHeight(), backgroundTop.getWidth(),
 						(int) (scale * 35));
 
 				backgroundBot = resizeImage(
-						ImageIO.read(new File("res/settings-bot-background.png")), scale / 2);
-				InternalTop = resizeImage(ImageIO.read(new File("res/settings-top-internal.png")),
+						ImageIO.read(new File("res/settings-bot-background.png")), scale / 2); //$NON-NLS-1$
+				InternalTop = resizeImage(ImageIO.read(new File("res/settings-top-internal.png")), //$NON-NLS-1$
 						scale / 2);
 				for (int i = 0; i < number; i++)
 				{
 					InternalMid[i] = resizeImage(
-							ImageIO.read(new File("res/settings-mid-internal.png")), scale / 2);
+							ImageIO.read(new File("res/settings-mid-internal.png")), scale / 2); //$NON-NLS-1$
 					settingList[i]
 							.setBounds((int) (backgroundTop.getWidth() / 2 - InternalTop.getWidth()
 									/ 2 + 30 * scale),
@@ -760,19 +760,19 @@ public class MainView extends JFrame implements KeyListener
 											* InternalMid[0].getHeight() + titre.getHeight()
 											+ (int) (10 * scale), (int) (500 * scale),
 									(int) (30 * scale));
-					settingList[i].setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale)));
+					settingList[i].setFont(new Font("Calibri", Font.BOLD, (int) (36 * scale))); //$NON-NLS-1$
 					comboBoxList[i].setBounds((int) (backgroundTop.getWidth() - 300 * scale),
 							backgroundTop.getHeight() + InternalTop.getHeight() + i
 									* InternalMid[0].getHeight() + titre.getHeight()
 									+ (int) (4 * scale), (int) (250 * scale), (int) (40 * scale));
-					comboBoxList[i].setFont(new Font("Calibri", Font.BOLD, (int) (25 * scale)));
+					comboBoxList[i].setFont(new Font("Calibri", Font.BOLD, (int) (25 * scale))); //$NON-NLS-1$
 				}
 				backgroundMid = resizeImage2(
-						ImageIO.read(new File("res/settings-mid-background.png")),
+						ImageIO.read(new File("res/settings-mid-background.png")), //$NON-NLS-1$
 						backgroundTop.getWidth(),
 						(number + 2) * InternalMid[0].getHeight() + titre.getHeight()
 								+ (int) (15 * scale));
-				InternalBot = resizeImage(ImageIO.read(new File("res/settings-bot-internal.png")),
+				InternalBot = resizeImage(ImageIO.read(new File("res/settings-bot-internal.png")), //$NON-NLS-1$
 						scale / 2);
 			}
 			catch (IOException e)
@@ -811,30 +811,30 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				backgroundTop = resizeImage(ImageIO.read(new File("res/haut-fond.png")), scale / 2);
-				backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")), 1,
+				backgroundTop = resizeImage(ImageIO.read(new File("res/haut-fond.png")), scale / 2); //$NON-NLS-1$
+				backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")), 1, //$NON-NLS-1$
 						200 * scale / 2);
-				backgroundBot = resizeImage(ImageIO.read(new File("res/bas-fond.png")), scale / 2);
-				internalTop = resizeImage(ImageIO.read(new File("res/haut-interieur.png")),
+				backgroundBot = resizeImage(ImageIO.read(new File("res/bas-fond.png")), scale / 2); //$NON-NLS-1$
+				internalTop = resizeImage(ImageIO.read(new File("res/haut-interieur.png")), //$NON-NLS-1$
 						scale / 2);
-				internalMid = resizeImage2(ImageIO.read(new File("res/mid-interne.png")), 1,
+				internalMid = resizeImage2(ImageIO.read(new File("res/mid-interne.png")), 1, //$NON-NLS-1$
 						50 * scale / 2);
-				internalBot = resizeImage(ImageIO.read(new File("res/bas-interieur.png")),
+				internalBot = resizeImage(ImageIO.read(new File("res/bas-interieur.png")), //$NON-NLS-1$
 						scale / 2);
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
-			titre = new JLabel("Help", SwingConstants.CENTER);
-			titre.setFont(new Font("Calibri", Font.BOLD, 36));
+			titre = new JLabel(Messages.getString("MainView.Help"), SwingConstants.CENTER); //$NON-NLS-1$
+			titre.setFont(new Font("Calibri", Font.BOLD, 36)); //$NON-NLS-1$
 			titre.setBounds(0, backgroundTop.getHeight(), (int) (scale * 345), (int) (scale * 34));
 			titre.setForeground(Color.WHITE);
 			this.add(titre);
 
 			text = new JLabel(
-					"<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque imperdiet, nisi<br />ornare molestie tempor, tellus mi dictum erat, at sagittis nunc dolor pulvinar justo.<br />Vivamus ullamcorper, arcu non laoreet suscipit, risus ligula consequat sapien, in<br />tempus turpis<br />elit imperdiet dolor. Proin elit augue, facilisis eu luctus at, pellentesque id tortor.<br />Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet imperdiet<br />libero. Etiam sagittis lorem non tellus mollis tristique. In euismod commodo nibh in<br />ultrices.<br /></html>");
-			text.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+					Messages.getString("MainView.HelpText")); //$NON-NLS-1$
+			text.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 			text.setBounds(0, internalTop.getHeight(), (int) (scale * 345), (int) (scale * 34 * 8));
 			text.setForeground(Color.BLACK);
 			this.add(text);
@@ -893,25 +893,25 @@ public class MainView extends JFrame implements KeyListener
 
 			try
 			{
-				backgroundTop = resizeImage(ImageIO.read(new File("res/haut-fond.png")), scale / 2);
-				backgroundBot = resizeImage(ImageIO.read(new File("res/bas-fond.png")), scale / 2);
-				internalTop = resizeImage(ImageIO.read(new File("res/haut-interieur.png")),
+				backgroundTop = resizeImage(ImageIO.read(new File("res/haut-fond.png")), scale / 2); //$NON-NLS-1$
+				backgroundBot = resizeImage(ImageIO.read(new File("res/bas-fond.png")), scale / 2); //$NON-NLS-1$
+				internalTop = resizeImage(ImageIO.read(new File("res/haut-interieur.png")), //$NON-NLS-1$
 						scale / 2);
 
-				titre.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+				titre.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 				titre.setBounds(0, backgroundTop.getHeight(), backgroundTop.getWidth(),
 						(int) (scale * 35));
 
-				text.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 24)));
+				text.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 24))); //$NON-NLS-1$
 				text.setBounds((int) (40 * scale),
 						backgroundTop.getHeight() + internalTop.getHeight(),
 						(internalTop.getWidth()), (int) (scale * 26 * 9));
 
-				internalMid = resizeImage2(ImageIO.read(new File("res/mid-interne.png")),
+				internalMid = resizeImage2(ImageIO.read(new File("res/mid-interne.png")), //$NON-NLS-1$
 						text.getWidth(), text.getHeight() - 52 * scale);
-				backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")),
+				backgroundMid = resizeImage2(ImageIO.read(new File("res/mid-fond.png")), //$NON-NLS-1$
 						backgroundTop.getWidth(), text.getHeight() + titre.getHeight() * 2.7);
-				internalBot = resizeImage(ImageIO.read(new File("res/bas-interieur.png")),
+				internalBot = resizeImage(ImageIO.read(new File("res/bas-interieur.png")), //$NON-NLS-1$
 						scale / 2);
 			}
 			catch (IOException e)
@@ -1002,8 +1002,8 @@ public class MainView extends JFrame implements KeyListener
 		JList<String> listNameOrID;
 		ListModel<String> listModelNameOrID;
 		ArrayList<CelestialObject> listModelObjects;
-		String[] keys = { "!id ", "!ProperName ", "!RA ", "!Dec ", "!Distance ", "!Mag ",
-				"!ColorIndex " };
+		String[] keys = { "!id ", "!ProperName ", "!RA ", "!Dec ", "!Distance ", "!Mag ", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"!ColorIndex " }; //$NON-NLS-1$
 		JScrollPane jScrollPane = new JScrollPane();
 		ArrayList<CelestialObject> listCelestialObject = new ArrayList<CelestialObject>();
 
@@ -1079,12 +1079,12 @@ public class MainView extends JFrame implements KeyListener
 		{
 
 			jScrollPane.setVisible(false);
-			String[] searchBarText = searchBarTextField.getText().split("[; ]");
-			String[] searchFeatures = searchBarTextField.getText().split(";");
+			String[] searchBarText = searchBarTextField.getText().split("[; ]"); //$NON-NLS-1$
+			String[] searchFeatures = searchBarTextField.getText().split(";"); //$NON-NLS-1$
 			String searchFeature = searchFeatures[searchFeatures.length - 1];
 
 			// log.info("\n>" + searchFeature + "<->" + searchFeature.split(" ").length + "\n");
-			if (searchFeature.split(" ").length > 1)
+			if (searchFeature.split(" ").length > 1) //$NON-NLS-1$
 			{
 				int index = listNameOrID.getSelectedIndex();
 				CelestialObject celObjt = listModelObjects.get(index);
@@ -1102,7 +1102,7 @@ public class MainView extends JFrame implements KeyListener
 				return;
 			}
 
-			String regex = searchBarText[searchBarText.length - 1] + "$";
+			String regex = searchBarText[searchBarText.length - 1] + "$"; //$NON-NLS-1$
 			searchBarTextField.setText(searchBarTextField.getText().replaceFirst(regex,
 					listNameOrID.getSelectedValue().toString()));
 
@@ -1121,7 +1121,7 @@ public class MainView extends JFrame implements KeyListener
 			listModelObjects.clear();
 
 			boolean canQueryDB = true;
-			String[] searchFeatures = searchBarTextField.getText().split(";");
+			String[] searchFeatures = searchBarTextField.getText().split(";"); //$NON-NLS-1$
 			for (String searchFeature : searchFeatures)
 			{
 				for (String key : keys)
@@ -1131,7 +1131,7 @@ public class MainView extends JFrame implements KeyListener
 						listModelNameOrID.setElement(key);
 					}
 				}
-				if (searchFeature.split(" ").length <= 1)
+				if (searchFeature.split(" ").length <= 1) //$NON-NLS-1$
 					canQueryDB = false;
 			}
 			if (canQueryDB)
@@ -1159,7 +1159,7 @@ public class MainView extends JFrame implements KeyListener
 					}
 					else
 						listModelNameOrID
-								.setElement("Aucun résultat n'a été trouvé dans la base de données");
+								.setElement(Messages.getString("MainView.NoResult")); //$NON-NLS-1$
 
 				}
 				catch (Exception ex)
@@ -1226,15 +1226,15 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				background = resizeImage(ImageIO.read(new File("res/backgroundCompass.png")), scale);
+				background = resizeImage(ImageIO.read(new File("res/backgroundCompass.png")), scale); //$NON-NLS-1$
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 
-			redNeedle = new Needle("res/aiguille_rouge.png", scale);
-			greenNeedle = new Needle("res/aiguille_vert.png", scale);
+			redNeedle = new Needle("res/aiguille_rouge.png", scale); //$NON-NLS-1$
+			greenNeedle = new Needle("res/aiguille_vert.png", scale); //$NON-NLS-1$
 
 			redNeedle.setBackground(this.getBackground());
 			redNeedle.setBounds(0, 0, (int) (scale * 345), (int) (scale * 304));
@@ -1247,8 +1247,8 @@ public class MainView extends JFrame implements KeyListener
 			this.add(greenNeedle, new Integer(2));
 
 			this.setBounds(0, 0, (int) (scale * 345), (int) (scale * 350));
-			coordinate = new JLabel("-10:2'13'' N", SwingConstants.CENTER);
-			coordinate.setFont(new Font("Calibri", Font.BOLD, 36));
+			coordinate = new JLabel("-10:2'13'' N", SwingConstants.CENTER); //$NON-NLS-1$
+			coordinate.setFont(new Font("Calibri", Font.BOLD, 36)); //$NON-NLS-1$
 			coordinate.setBounds(0, (int) (scale * 310), (int) (scale * 345), (int) (scale * 34));
 			coordinate.setForeground(Color.WHITE);
 			this.add(coordinate, new Integer(3));
@@ -1279,7 +1279,7 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				background = resizeImage(ImageIO.read(new File("res/backgroundCompass.png")), scale);
+				background = resizeImage(ImageIO.read(new File("res/backgroundCompass.png")), scale); //$NON-NLS-1$
 			}
 			catch (IOException e)
 			{
@@ -1300,7 +1300,7 @@ public class MainView extends JFrame implements KeyListener
 				log.warning(e.toString());
 			}
 			this.setBounds(0, 0, (int) (scale * 345), (int) (scale * 350));
-			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 			coordinate.setBounds(0, (int) (scale * 310), (int) (scale * 345), (int) (scale * 35));
 		}
 
@@ -1412,7 +1412,7 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				background = resizeImage(ImageIO.read(new File("res/backgroundInclinometer.png")),
+				background = resizeImage(ImageIO.read(new File("res/backgroundInclinometer.png")), //$NON-NLS-1$
 						scale);
 			}
 			catch (IOException e)
@@ -1420,8 +1420,8 @@ public class MainView extends JFrame implements KeyListener
 				e.printStackTrace();
 			}
 
-			redNeedle = new Needle("res/aiguille_rouge_inclinometer.png", scale);
-			greenNeedle = new Needle("res/aiguille_vert_inclinometer.png", scale);
+			redNeedle = new Needle("res/aiguille_rouge_inclinometer.png", scale); //$NON-NLS-1$
+			greenNeedle = new Needle("res/aiguille_vert_inclinometer.png", scale); //$NON-NLS-1$
 
 			redNeedle.setBackground(this.getBackground());
 			redNeedle.setBounds(0, 0, (int) (scale * 186), (int) (scale * 258));
@@ -1435,8 +1435,8 @@ public class MainView extends JFrame implements KeyListener
 
 			this.setBounds(0, 0, (int) (scale * 186), (int) (scale * 324));
 			;
-			coordinate = new JLabel("-10:2'13'' N", SwingConstants.CENTER);
-			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+			coordinate = new JLabel("-10:2'13'' N", SwingConstants.CENTER); //$NON-NLS-1$
+			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 			coordinate.setBounds(0, (int) (scale * 258), (int) (scale * 186), (int) (scale * 35));
 			coordinate.setForeground(Color.WHITE);
 
@@ -1468,7 +1468,7 @@ public class MainView extends JFrame implements KeyListener
 			scale = _scale;
 			try
 			{
-				background = resizeImage(ImageIO.read(new File("res/backgroundInclinometer.png")),
+				background = resizeImage(ImageIO.read(new File("res/backgroundInclinometer.png")), //$NON-NLS-1$
 						scale);
 			}
 			catch (IOException e)
@@ -1492,7 +1492,7 @@ public class MainView extends JFrame implements KeyListener
 				log.warning(e.toString());
 			}
 			this.setBounds(0, 0, (int) (scale * 186), (int) (scale * 324));
-			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36)));
+			coordinate.setFont(new Font("Calibri", Font.BOLD, (int) (scale * 36))); //$NON-NLS-1$
 			coordinate.setBounds(0, (int) (scale * 258), (int) (scale * 186), (int) (scale * 35));
 		}
 
