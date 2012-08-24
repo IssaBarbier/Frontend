@@ -547,7 +547,7 @@ public class MainView extends JFrame implements KeyListener
 	private class SettingsConfig extends JLayeredPane
 	{
 		double scale;
-		int number = 10;
+		int number = 7;
 		BufferedImage backgroundTop;
 		BufferedImage backgroundMid;
 		BufferedImage backgroundBot;
@@ -562,9 +562,6 @@ public class MainView extends JFrame implements KeyListener
 				new JLabel(Messages.getString("MainView.Stopbits")),
 				new JLabel(Messages.getString("MainView.Parity")),
 				new JLabel(Messages.getString("MainView.FlowControl")),
-				new JLabel(Messages.getString("MainView.SamplingRate")),
-				new JLabel(Messages.getString("MainView.DatabaseName")),
-				new JLabel(Messages.getString("MainView.InputDelimiter")),
 				new JLabel(Messages.getString("MainView.Simulation"))
 			};
 		JComboBox[] comboBoxList = new JComboBox[number];
@@ -599,18 +596,9 @@ public class MainView extends JFrame implements KeyListener
 			String flowControl[] = { Messages.getString("MainView.None"), Messages.getString("MainView.RTSCTS_IN"), Messages.getString("MainView.RTSCTS_OUT"), Messages.getString("MainView.XONXOFF_IN"), Messages.getString("MainView.XONXOFF_OUT") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[5] = new JComboBox<String>(flowControl);
 			comboBoxList[5].setSelectedItem(settings.getFlowControl());
-			String samplingRate[] = { "25" }; //$NON-NLS-1$
-			comboBoxList[6] = new JComboBox<String>(samplingRate);
-			comboBoxList[6].setSelectedItem(String.valueOf(settings.getSamplingRate()));
-			String databaseName[] = { "hyz.db" }; //$NON-NLS-1$
-			comboBoxList[7] = new JComboBox<String>(databaseName);
-			comboBoxList[7].setSelectedItem(settings.getDatabaseName());
-			String imputDelimiter[] = { ";", ":" }; //$NON-NLS-1$ //$NON-NLS-2$
-			comboBoxList[8] = new JComboBox<String>(imputDelimiter);
-			comboBoxList[8].setSelectedItem(settings.getInputDelimiter());
 			String simulation[] = { Messages.getString("MainView.On"), Messages.getString("MainView.Off") }; //$NON-NLS-1$ //$NON-NLS-2$
-			comboBoxList[9] = new JComboBox<String>(simulation);
-			comboBoxList[9].setSelectedItem((settings.getSimulation()) ? Messages.getString("MainView.On") : Messages.getString("MainView.Off")); //$NON-NLS-1$ //$NON-NLS-2$
+			comboBoxList[6] = new JComboBox<String>(simulation);
+			comboBoxList[6].setSelectedItem((settings.getSimulation()) ? Messages.getString("MainView.On") : Messages.getString("MainView.Off")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			for (int i = 0; i < number; i++)
 			{
@@ -722,13 +710,26 @@ public class MainView extends JFrame implements KeyListener
 					.getSelectedItem().toString() : Messages.getString("MainView.None")); //$NON-NLS-1$
 			settings.setSpeed(Integer.parseInt(comboBoxList[1].getSelectedItem().toString()));
 			settings.setDatabit(Integer.parseInt(comboBoxList[2].getSelectedItem().toString()));
-			settings.setStopbit(Integer.parseInt(comboBoxList[3].getSelectedItem().toString()));
-			settings.setParity(comboBoxList[4].getSelectedItem().toString());
-			settings.setFlowControl(comboBoxList[5].getSelectedItem().toString());
-			settings.setSamplingRate(Integer.parseInt(comboBoxList[6].getSelectedItem().toString()));
-			settings.setDatabaseName(comboBoxList[6].getSelectedItem().toString());
-			settings.setInputDelimiter(comboBoxList[7].getSelectedItem().toString());
-			settings.setSimulation((comboBoxList[8].getSelectedItem().toString().equals(Messages.getString("MainView.On"))) ? true //$NON-NLS-1$
+			settings.setStopbit(
+					(comboBoxList[3].getSelectedItem().toString().equals("1"))?jssc.SerialPort.STOPBITS_1:
+						(comboBoxList[3].getSelectedItem().toString().equals("2"))?jssc.SerialPort.STOPBITS_2:jssc.SerialPort.STOPBITS_1_5
+						);
+			settings.setParity(
+						(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.ODD")))?jssc.SerialPort.PARITY_ODD:
+							(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.EVEN")))?jssc.SerialPort.PARITY_EVEN:
+								(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.MARK")))?jssc.SerialPort.PARITY_MARK:
+									(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.SPACE")))?jssc.SerialPort.PARITY_SPACE:jssc.SerialPort.PARITY_NONE
+							);
+
+			settings.setFlowControl(
+					(comboBoxList[5].getSelectedItem().toString().equals(Messages.getString("MainView.RTSCTS_IN")))?jssc.SerialPort.FLOWCONTROL_RTSCTS_IN:
+						(comboBoxList[5].getSelectedItem().toString().equals(Messages.getString("MainView.RTSCTS_OUT")))?jssc.SerialPort.FLOWCONTROL_RTSCTS_OUT:
+							(comboBoxList[5].getSelectedItem().toString().equals(Messages.getString("MainView.XONXOFF_IN")))?jssc.SerialPort.FLOWCONTROL_XONXOFF_IN:
+								(comboBoxList[5].getSelectedItem().toString().equals(Messages.getString("MainView.XONXOFF_OUT")))?jssc.SerialPort.FLOWCONTROL_XONXOFF_OUT:jssc.SerialPort.FLOWCONTROL_NONE
+						);
+			
+
+			settings.setSimulation((comboBoxList[6].getSelectedItem().toString().equals(Messages.getString("MainView.On"))) ? true //$NON-NLS-1$
 					: false);
 			Serializer.serialize("settings.conf", settings); //$NON-NLS-1$
 

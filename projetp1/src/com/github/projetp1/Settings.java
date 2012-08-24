@@ -15,8 +15,6 @@ public class Settings implements Serializable
 	private int stopbit;
 	private int parity;
 	private int flowControl;
-	private String databaseName;
-	private String inputDelimiter;
 	private boolean simulation;
 
 	public Settings()
@@ -38,8 +36,6 @@ public class Settings implements Serializable
 			this.stopbit = deserialize.stopbit;
 			this.parity = deserialize.parity;
 			this.flowControl = deserialize.flowControl;
-			this.databaseName = deserialize.databaseName;
-			this.inputDelimiter = deserialize.inputDelimiter;
 			this.simulation = deserialize.simulation;
 		}
 		else
@@ -51,8 +47,6 @@ public class Settings implements Serializable
 			this.stopbit = jssc.SerialPort.STOPBITS_1;
 			this.parity = jssc.SerialPort.PARITY_NONE;
 			this.flowControl = jssc.SerialPort.FLOWCONTROL_NONE;
-			this.databaseName = "hyg.db";
-			this.inputDelimiter = ";";
 			this.simulation = false;
 		}
 	}
@@ -214,25 +208,5 @@ public class Settings implements Serializable
 	public void setSimulation(boolean _simulation)
 	{
 		this.simulation = _simulation;
-	}
-
-	public String getDatabaseName()
-	{
-		return databaseName;
-	}
-
-	public void setDatabaseName(String databaseName)
-	{
-		this.databaseName = databaseName;
-	}
-
-	public String getInputDelimiter()
-	{
-		return inputDelimiter;
-	}
-
-	public void setInputDelimiter(String inputDelimiter)
-	{
-		this.inputDelimiter = inputDelimiter;
 	}
 }
