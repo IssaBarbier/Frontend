@@ -555,10 +555,18 @@ public class MainView extends JFrame implements KeyListener
 		BufferedImage[] InternalMid = new BufferedImage[number];
 
 		JLabel titre;
-		JLabel[] settingList = { new JLabel(Messages.getString("MainView.Port")), new JLabel(Messages.getString("MainView.Speed")), new JLabel(Messages.getString("MainView.Databits")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				new JLabel(Messages.getString("MainView.Stopbits")), new JLabel(Messages.getString("MainView.Parity")), new JLabel(Messages.getString("MainView.FlowControl")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				new JLabel(Messages.getString("MainView.SamplingRate")), new JLabel(Messages.getString("MainView.DatabaseName")), //$NON-NLS-1$ //$NON-NLS-2$
-				new JLabel(Messages.getString("MainView.InputDelimiter")), new JLabel(Messages.getString("MainView.Simulation")) }; //$NON-NLS-1$ //$NON-NLS-2$
+		JLabel[] settingList = {
+				new JLabel(Messages.getString("MainView.Port")),
+				new JLabel(Messages.getString("MainView.Speed")),
+				new JLabel(Messages.getString("MainView.Databits")),
+				new JLabel(Messages.getString("MainView.Stopbits")),
+				new JLabel(Messages.getString("MainView.Parity")),
+				new JLabel(Messages.getString("MainView.FlowControl")),
+				new JLabel(Messages.getString("MainView.SamplingRate")),
+				new JLabel(Messages.getString("MainView.DatabaseName")),
+				new JLabel(Messages.getString("MainView.InputDelimiter")),
+				new JLabel(Messages.getString("MainView.Simulation"))
+			};
 		JComboBox[] comboBoxList = new JComboBox[number];
 
 		BufferedImage InternalBot;

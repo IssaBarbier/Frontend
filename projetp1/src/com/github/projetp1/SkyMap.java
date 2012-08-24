@@ -255,7 +255,7 @@ public class SkyMap extends Container implements MouseListener
 
 		// log.info("angle : " + Math.toDegrees(l_dangle) + "\r\n");
 
-		if (mainView.getPic() != null && mainView.getPic().getMode() == Pic.PicMode.GUIDING)
+		if (mainView.getPic() != null)// && mainView.getPic().getMode() == Pic.PicMode.GUIDING)
 		{
 			PicArrowDirection dir = null;
 
