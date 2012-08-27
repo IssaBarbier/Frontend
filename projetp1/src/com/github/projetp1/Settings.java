@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public class Settings implements Serializable
 {
-	private static final long serialVersionUID = -6645122428191211251L;
-	
+	private static final long serialVersionUID = -8939567320279249059L;
+
 	private String port;
 	private int speed;
 	private int databit;
