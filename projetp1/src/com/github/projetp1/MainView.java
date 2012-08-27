@@ -589,13 +589,59 @@ public class MainView extends JFrame implements KeyListener
 			comboBoxList[2].setSelectedItem(String.valueOf(settings.getDatabit()));
 			String stopbit[] = { "1", "2", "1_5" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			comboBoxList[3] = new JComboBox<String>(stopbit);
-			comboBoxList[3].setSelectedItem(String.valueOf(settings.getStopbit()));
+			if (settings.getStopbit()!=jssc.SerialPort.STOPBITS_1_5)
+				comboBoxList[3].setSelectedItem(String.valueOf(settings.getStopbit()));
+			else
+				comboBoxList[3].setSelectedItem("1_5");
+			
 			String parity[] = { Messages.getString("MainView.None"), Messages.getString("MainView.Odd"), Messages.getString("MainView.Even"), Messages.getString("MainView.Mark"), Messages.getString("MainView.Space") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[4] = new JComboBox<String>(parity);
-			comboBoxList[4].setSelectedItem(settings.getParity());
+			switch (settings.getParity())
+			{
+				case jssc.SerialPort.PARITY_EVEN:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.Even"));
+					break;
+				case jssc.SerialPort.PARITY_MARK:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.Mark"));
+					break;
+				case jssc.SerialPort.PARITY_NONE:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.None"));
+					break;
+				case jssc.SerialPort.PARITY_ODD:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.Odd"));
+					break;
+				case jssc.SerialPort.PARITY_SPACE:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.Space"));
+					break;
+				default:
+					comboBoxList[4].setSelectedItem(Messages.getString("MainView.None"));
+					break;
+			}
 			String flowControl[] = { Messages.getString("MainView.None"), Messages.getString("MainView.RTSCTS_IN"), Messages.getString("MainView.RTSCTS_OUT"), Messages.getString("MainView.XONXOFF_IN"), Messages.getString("MainView.XONXOFF_OUT") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			comboBoxList[5] = new JComboBox<String>(flowControl);
 			comboBoxList[5].setSelectedItem(settings.getFlowControl());
+			switch (settings.getFlowControl())
+			{
+				case jssc.SerialPort.FLOWCONTROL_NONE:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.None"));
+					break;
+				case jssc.SerialPort.FLOWCONTROL_RTSCTS_IN:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.RTSCTS_IN"));
+					break;
+				case jssc.SerialPort.FLOWCONTROL_RTSCTS_OUT:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.RTSCTS_OUT"));
+					break;
+				case jssc.SerialPort.FLOWCONTROL_XONXOFF_IN:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.XONXOFF_IN"));
+					break;
+				case jssc.SerialPort.FLOWCONTROL_XONXOFF_OUT:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.XONXOFF_OUT"));
+					break;
+				default:
+					comboBoxList[5].setSelectedItem(Messages.getString("MainView.None"));
+					break;
+			}
+			
 			String simulation[] = { Messages.getString("MainView.On"), Messages.getString("MainView.Off") }; //$NON-NLS-1$ //$NON-NLS-2$
 			comboBoxList[6] = new JComboBox<String>(simulation);
 			comboBoxList[6].setSelectedItem((settings.getSimulation()) ? Messages.getString("MainView.On") : Messages.getString("MainView.Off")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -715,10 +761,10 @@ public class MainView extends JFrame implements KeyListener
 						(comboBoxList[3].getSelectedItem().toString().equals("2"))?jssc.SerialPort.STOPBITS_2:jssc.SerialPort.STOPBITS_1_5
 						);
 			settings.setParity(
-						(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.ODD")))?jssc.SerialPort.PARITY_ODD:
-							(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.EVEN")))?jssc.SerialPort.PARITY_EVEN:
-								(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.MARK")))?jssc.SerialPort.PARITY_MARK:
-									(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.SPACE")))?jssc.SerialPort.PARITY_SPACE:jssc.SerialPort.PARITY_NONE
+						(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.Odd")))?jssc.SerialPort.PARITY_ODD:
+							(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.Even")))?jssc.SerialPort.PARITY_EVEN:
+								(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.Mark")))?jssc.SerialPort.PARITY_MARK:
+									(comboBoxList[4].getSelectedItem().toString().equals(Messages.getString("MainView.Space")))?jssc.SerialPort.PARITY_SPACE:jssc.SerialPort.PARITY_NONE
 							);
 
 			settings.setFlowControl(
